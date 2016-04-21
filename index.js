@@ -36,7 +36,7 @@ module.exports = function (results) {
 			type: 'header',
 			filePath: filePath,
 			relativeFilePath: path.relative('.', filePath),
-			firstLine: messages[0].line
+			firstLineCol: messages[0].line + ':' + messages[0].column
 		});
 
 		messages.forEach(function (x) {
@@ -80,7 +80,7 @@ module.exports = function (results) {
 		if (x.type === 'header') {
 			// add the line number so it's Cmd+click'able in some terminals
 			// use dim & gray for terminals like iTerm that doesn't support `hidden`
-			return '  ' + chalk.underline(x.relativeFilePath + chalk.hidden.dim.gray(':' + x.firstLine));
+			return '  ' + chalk.underline(x.relativeFilePath + chalk.hidden.dim.gray(':' + x.firstLineCol));
 		}
 
 		if (x.type === 'message') {
