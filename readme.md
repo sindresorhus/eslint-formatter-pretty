@@ -35,24 +35,27 @@ grunt.initConfig({
 grunt.loadNpmTasks('grunt-eslint');
 grunt.registerTask('default', ['eslint']);
 ```
-### [gulp-eslint](https://github.com/adametry/gulp-eslint)
-```js
-var gulp = require('gulp');
-var eslint = require('gulp-eslint');
 
-gulp.task('lint', function() {
-	return gulp.src('./example.js')
+### [gulp-eslint](https://github.com/adametry/gulp-eslint)
+
+```js
+const gulp = require('gulp');
+const eslint = require('gulp-eslint');
+
+gulp.task('lint', () =>
+	gulp.src('file.js')
 		.pipe(eslint())
 		.pipe(eslint.format('node_modules/eslint-formatter-pretty');
-});
+);
 ```
 
-### [eslint-loader](https://github.com/MoOx/eslint-loader)
+### [Webpack](https://github.com/webpack/webpack) - [eslint-loader](https://github.com/MoOx/eslint-loader)
+
 ```js
 module.exports = {
 	entry: 'example.js',
 	output: {
-		'dist/',
+		'dist',
 		filename: '[name].js'
 	},
 	module: {
