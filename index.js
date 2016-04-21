@@ -5,6 +5,8 @@ var logSymbols = require('log-symbols');
 var plur = require('plur');
 var stringWidth = require('string-width');
 var ansiEscapes = require('ansi-escapes');
+var repeating = require('repeating');
+var padding = repeating.bind(null, ' ');
 
 module.exports = function (results) {
 	var lines = [];
@@ -29,12 +31,11 @@ module.exports = function (results) {
 		}
 
 		var filePath = result.filePath;
-		var relativeFilePath = path.relative('.', result.filePath);
 
 		lines.push({
 			type: 'header',
 			filePath: filePath,
-			relativeFilePath: relativeFilePath,
+			relativeFilePath: path.relative('.', filePath),
 			firstLine: messages[0].line
 		});
 
@@ -42,8 +43,8 @@ module.exports = function (results) {
 			var msg = x.message;
 
 			// stylize inline code blocks
-			msg = msg.replace(/`(.*?)`/g, function (m) {
-				return chalk.bold(m.slice(1, -1));
+			msg = msg.replace(/`(.*?)`/g, function (m, p1) {
+				return chalk.bold(p1);
 			});
 
 			var line = String(x.line || 0);
@@ -83,11 +84,10 @@ module.exports = function (results) {
 		}
 
 		if (x.type === 'message') {
-			var char = x.severity === 'warning' ? logSymbols.warning : logSymbols.error;
 			return [
 				'',
-				char,
-				padding(maxLineWidth - x.lineWidth) + x.line + chalk.gray(':') + x.column,
+				x.severity === 'warning' ? logSymbols.warning : logSymbols.error,
+				padding(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
 				padding(maxColumnWidth - x.columnWidth) + x.message,
 				padding(maxMessageWidth - x.messageWidth) + chalk.dim(x.ruleId)
 			].join('  ');
@@ -106,7 +106,3 @@ module.exports = function (results) {
 
 	return (errorCount + warningCount) > 0 ? output : '';
 };
-
-function padding(size) {
-	return Array(size + 1).join(' ');
-}
