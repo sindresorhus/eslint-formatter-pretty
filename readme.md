@@ -35,7 +35,36 @@ grunt.initConfig({
 grunt.loadNpmTasks('grunt-eslint');
 grunt.registerTask('default', ['eslint']);
 ```
+### [gulp-eslint](https://github.com/adametry/gulp-eslint)
+```js
+var gulp = require('gulp');
+var eslint = require('gulp-eslint');
 
+gulp.task('lint', function() {
+	return gulp.src('./example.js')
+		.pipe(eslint())
+		.pipe(eslint.format('node_modules/eslint-formatter-pretty');
+});
+```
+
+### [eslint-loader](https://github.com/MoOx/eslint-loader)
+```js
+module.exports = {
+	entry: 'example.js',
+	output: {
+		'dist/',
+		filename: '[name].js'
+	},
+	module: {
+		loaders: [
+			{ test: /\.js$/, loader: 'eslint-loader' }
+		]	
+	},
+	eslint: {
+		formatter: require('eslint-formatter-pretty')
+	}
+};
+```
 
 ## Tip
 
