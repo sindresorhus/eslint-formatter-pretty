@@ -45,7 +45,7 @@ const eslint = require('gulp-eslint');
 gulp.task('lint', () =>
 	gulp.src('file.js')
 		.pipe(eslint())
-		.pipe(eslint.format('node_modules/eslint-formatter-pretty');
+		.pipe(eslint.format('node_modules/eslint-formatter-pretty'))
 );
 ```
 
@@ -53,15 +53,15 @@ gulp.task('lint', () =>
 
 ```js
 module.exports = {
-	entry: 'example.js',
+	entry: ['file.js'],
 	output: {
-		'dist',
+		path: 'dist',
 		filename: '[name].js'
 	},
 	module: {
 		loaders: [
 			{ test: /\.js$/, loader: 'eslint-loader' }
-		]	
+		]
 	},
 	eslint: {
 		formatter: require('eslint-formatter-pretty')
