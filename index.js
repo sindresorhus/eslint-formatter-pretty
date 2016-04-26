@@ -43,8 +43,8 @@ module.exports = function (results) {
 			var msg = x.message;
 
 			// stylize inline code blocks
-			msg = msg.replace(/`(.*?)`/g, function (m, p1) {
-				return chalk.bold(p1);
+			msg = msg.replace(/\B`(.*?)`\B|\B'(.*?)'\B/g, function (m, p1, p2) {
+				return chalk.bold(p1 || p2);
 			});
 
 			var line = String(x.line || 0);
