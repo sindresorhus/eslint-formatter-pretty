@@ -76,20 +76,33 @@ module.exports = function (results) {
 	// make relative paths Cmd+click'able in iTerm
 	output += ansiEscapes.iTerm.setCwd();
 
+	var lastRuleId = null;
+
 	output += lines.map(function (x) {
 		if (x.type === 'header') {
+			lastRuleId = null;
 			// add the line number so it's Cmd+click'able in some terminals
 			// use dim & gray for terminals like iTerm that doesn't support `hidden`
 			return '  ' + chalk.underline(x.relativeFilePath + chalk.hidden.dim.gray(':' + x.firstLineCol));
 		}
 
 		if (x.type === 'message') {
+			var ruleId = x.ruleId;
+
+			if (ruleId === lastRuleId) {
+				// ruleId = '↑';
+				// ruleId = '^';
+				ruleId = '⇧';
+			}
+
+			lastRuleId = x.ruleId;
+
 			return [
 				'',
 				x.severity === 'warning' ? logSymbols.warning : logSymbols.error,
 				padding(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
 				padding(maxColumnWidth - x.columnWidth) + x.message,
-				padding(maxMessageWidth - x.messageWidth) + chalk.gray.dim(x.ruleId)
+				padding(maxMessageWidth - x.messageWidth) + chalk.gray.dim(ruleId)
 			].join('  ');
 		}
 
