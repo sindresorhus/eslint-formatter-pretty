@@ -89,7 +89,7 @@ module.exports = function (results) {
 				x.severity === 'warning' ? logSymbols.warning : logSymbols.error,
 				padding(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
 				padding(maxColumnWidth - x.columnWidth) + x.message,
-				padding(maxMessageWidth - x.messageWidth) + chalk.dim(x.ruleId)
+				padding(maxMessageWidth - x.messageWidth) + chalk.gray.dim(x.ruleId)
 			].join('  ');
 		}
 
