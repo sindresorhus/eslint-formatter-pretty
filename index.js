@@ -73,8 +73,10 @@ module.exports = function (results) {
 
 	var output = '\n';
 
-	// make relative paths Cmd+click'able in iTerm
-	output += ansiEscapes.iTerm.setCwd();
+	if (process.stdout.isTTY && !process.env.CI) {
+		// make relative paths Cmd+click'able in iTerm
+		output += ansiEscapes.iTerm.setCwd();
+	}
 
 	output += lines.map(function (x) {
 		if (x.type === 'header') {
