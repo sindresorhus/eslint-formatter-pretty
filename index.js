@@ -16,59 +16,75 @@ module.exports = results => {
 	let maxMessageWidth = 0;
 	let showLineNumbers = false;
 
-	results.forEach(result => {
-		const messages = result.messages;
+	results
+		.sort((a, b) => b.errorCount - a.errorCount)
+		.forEach(result => {
+			const messages = result.messages;
 
-		if (messages.length === 0) {
-			return;
-		}
+			if (messages.length === 0) {
+				return;
+			}
 
-		errorCount += result.errorCount;
-		warningCount += result.warningCount;
+			errorCount += result.errorCount;
+			warningCount += result.warningCount;
 
-		if (lines.length !== 0) {
-			lines.push({type: 'separator'});
-		}
+			if (lines.length !== 0) {
+				lines.push({type: 'separator'});
+			}
 
-		const filePath = result.filePath;
-
-		lines.push({
-			type: 'header',
-			filePath,
-			relativeFilePath: path.relative('.', filePath),
-			firstLineCol: messages[0].line + ':' + messages[0].column
-		});
-
-		messages.forEach(x => {
-			let message = x.message;
-
-			// stylize inline code blocks
-			message = message.replace(/\B`(.*?)`\B|\B'(.*?)'\B/g, (m, p1, p2) => chalk.bold(p1 || p2));
-
-			const line = String(x.line || 0);
-			const column = String(x.column || 0);
-			const lineWidth = stringWidth(line);
-			const columnWidth = stringWidth(column);
-			const messageWidth = stringWidth(message);
-
-			maxLineWidth = Math.max(lineWidth, maxLineWidth);
-			maxColumnWidth = Math.max(columnWidth, maxColumnWidth);
-			maxMessageWidth = Math.max(messageWidth, maxMessageWidth);
-			showLineNumbers = showLineNumbers || x.line || x.column;
+			const filePath = result.filePath;
 
 			lines.push({
-				type: 'message',
-				severity: (x.fatal || x.severity === 2 || x.severity === 'error') ? 'error' : 'warning',
-				line,
-				lineWidth,
-				column,
-				columnWidth,
-				message,
-				messageWidth,
-				ruleId: x.ruleId || ''
+				type: 'header',
+				filePath,
+				relativeFilePath: path.relative('.', filePath),
+				firstLineCol: messages[0].line + ':' + messages[0].column
 			});
+
+			messages
+				.sort((a, b) => {
+					const condition = (a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2);
+
+					if (condition) {
+						return 1;
+					}
+
+					if (!condition) {
+						return -1;
+					}
+
+					return 0;
+				})
+				.forEach(x => {
+					let message = x.message;
+
+					// stylize inline code blocks
+					message = message.replace(/\B`(.*?)`\B|\B'(.*?)'\B/g, (m, p1, p2) => chalk.bold(p1 || p2));
+
+					const line = String(x.line || 0);
+					const column = String(x.column || 0);
+					const lineWidth = stringWidth(line);
+					const columnWidth = stringWidth(column);
+					const messageWidth = stringWidth(message);
+
+					maxLineWidth = Math.max(lineWidth, maxLineWidth);
+					maxColumnWidth = Math.max(columnWidth, maxColumnWidth);
+					maxMessageWidth = Math.max(messageWidth, maxMessageWidth);
+					showLineNumbers = showLineNumbers || x.line || x.column;
+
+					lines.push({
+						type: 'message',
+						severity: (x.fatal || x.severity === 2 || x.severity === 'error') ? 'error' : 'warning',
+						line,
+						lineWidth,
+						column,
+						columnWidth,
+						message,
+						messageWidth,
+						ruleId: x.ruleId || ''
+					});
+				});
 		});
-	});
 
 	let output = '\n';
 
