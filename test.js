@@ -1,5 +1,5 @@
 import test from 'ava';
-import fixture from './fixture.json';
+import fixture from './fixture';
 import m from './';
 
 test(t => {

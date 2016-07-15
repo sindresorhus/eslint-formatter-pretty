@@ -72,6 +72,7 @@ module.exports = {
 };
 ```
 
+
 ## Tip
 
 In iTerm, <kbd>Cmd</kbd>+click the filename header to open the file in your editor.
