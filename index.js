@@ -56,7 +56,7 @@ module.exports = results => {
 
 			lines.push({
 				type: 'message',
-				severity: (x.fatal || x.severity === 2) ? 'error' : 'warning',
+				severity: (x.fatal || x.severity === 2 || x.severity === 'error') ? 'error' : 'warning',
 				line,
 				lineWidth,
 				column,
