@@ -14,6 +14,7 @@ module.exports = results => {
 	let maxLineWidth = 0;
 	let maxColumnWidth = 0;
 	let maxMessageWidth = 0;
+	let showLineNumbers = false;
 
 	results.forEach(result => {
 		const messages = result.messages;
@@ -53,6 +54,7 @@ module.exports = results => {
 			maxLineWidth = Math.max(lineWidth, maxLineWidth);
 			maxColumnWidth = Math.max(columnWidth, maxColumnWidth);
 			maxMessageWidth = Math.max(messageWidth, maxMessageWidth);
+			showLineNumbers = showLineNumbers || x.line || x.column;
 
 			lines.push({
 				type: 'message',
@@ -83,13 +85,19 @@ module.exports = results => {
 		}
 
 		if (x.type === 'message') {
-			return [
+			const line = [
 				'',
 				x.severity === 'warning' ? logSymbols.warning : logSymbols.error,
 				repeating(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
 				repeating(maxColumnWidth - x.columnWidth) + x.message,
 				repeating(maxMessageWidth - x.messageWidth) + chalk.gray.dim(x.ruleId)
-			].join('  ');
+			];
+
+			if (!showLineNumbers) {
+				line.splice(2, 1);
+			}
+
+			return line.join('  ');
 		}
 
 		return '';
