@@ -36,6 +36,7 @@
   },
   "devDependencies": {
     "ava": "*",
+    "strip-ansi": "^3.0.1",
     "xo": "*"
   },
   "xo": {
