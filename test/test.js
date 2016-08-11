@@ -8,12 +8,14 @@ import lineNumbers from './fixtures/line-numbers';
 test('output', t => {
 	const output = m(defaultFixture);
 	console.log(output);
+	t.regex(stripAnsi(output), /index\.js:8:2\n/);
 	t.regex(stripAnsi(output), /✖[ ]{3}1:1[ ]{2}AVA should be imported as test.[ ]{6}ava\/use-test/);
 });
 
 test('no line numbers', t => {
 	const output = m(noLineNumbers);
 	console.log(output);
+	t.regex(stripAnsi(output), /index\.js\n/);
 	t.regex(stripAnsi(output), /✖[ ]{2}AVA should be imported as test.[ ]{6}ava\/use-test/);
 });
 
