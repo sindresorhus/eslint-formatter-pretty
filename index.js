@@ -81,7 +81,9 @@ module.exports = results => {
 		if (x.type === 'header') {
 			// add the line number so it's Cmd+click'able in some terminals
 			// use dim & gray for terminals like iTerm that doesn't support `hidden`
-			return '  ' + chalk.underline(x.relativeFilePath + chalk.hidden.dim.gray(`:${x.firstLineCol}`));
+			const position = showLineNumbers ? chalk.hidden.dim.gray(`:${x.firstLineCol}`) : '';
+
+			return '  ' + chalk.underline(x.relativeFilePath + position);
 		}
 
 		if (x.type === 'message') {
