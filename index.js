@@ -17,7 +17,7 @@ module.exports = results => {
 	let showLineNumbers = false;
 
 	results
-		.sort((a, b) => b.errorCount - a.errorCount)
+		.sort((a, b) => a.errorCount - b.errorCount)
 		.forEach(result => {
 			const messages = result.messages;
 
