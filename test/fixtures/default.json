@@ -39,5 +39,21 @@
 		],
 		"errorCount": 1,
 		"warningCount": 0
+	},
+	{
+		"filePath": "/Users/sindresorhus/dev/eslint-formatter-pretty/foo.js",
+		"messages": [
+			{
+				"ruleId": "no-warning-comments",
+				"severity": 1,
+				"message": "Unexpected 'todo' comment.",
+				"line": 8,
+				"column": 2,
+				"nodeType": "Line",
+				"source": "\t// TODO: fix this later"
+			}
+		],
+		"errorCount": 0,
+		"warningCount": 1
 	}
 ]
