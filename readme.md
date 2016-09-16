@@ -1,6 +1,6 @@
 # eslint-formatter-pretty [![Build Status](https://travis-ci.org/sindresorhus/eslint-formatter-pretty.svg?branch=master)](https://travis-ci.org/sindresorhus/eslint-formatter-pretty)
 
->  Pretty formatter for [ESLint](http://eslint.org)
+> Pretty formatter for [ESLint](http://eslint.org)
 
 ![](screenshot.png)
 
