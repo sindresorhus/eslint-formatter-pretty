@@ -51,6 +51,8 @@ gulp.task('lint', () =>
 
 ### [eslint-loader](https://github.com/MoOx/eslint-loader) *(webpack)*
 
+#### webpack v1.x.x
+
 ```js
 module.exports = {
 	entry: ['file.js'],
@@ -69,6 +71,35 @@ module.exports = {
 	eslint: {
 		formatter: require('eslint-formatter-pretty')
 	}
+};
+```
+
+#### webpack v2.x.x
+
+```js
+module.exports = {
+	entry: ['file.js'],
+	output: {
+		path: 'dist',
+		filename: '[name].js'
+	},
+	module: {
+		rules: [
+			{
+				test: /\.js$/,
+				loader: 'eslint-loader'
+			}
+		]
+	},
+	plugins: [
+		new webpack.LoaderOptionsPlugin({
+			options: {
+				eslint: {
+					formatter: require('eslint-formatter-pretty')
+				}
+			}
+		})
+	]
 };
 ```
 
