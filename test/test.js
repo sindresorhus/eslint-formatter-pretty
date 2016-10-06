@@ -39,7 +39,5 @@ test('sort by severity, then line number, then column', t => {
 		sanitized.indexOf('✖  40:8')
 	];
 	console.log(output);
-	t.deepEqual(indexes, indexes.slice().sort((a, b) => {
-		return a - b;
-	}));
+	t.deepEqual(indexes, indexes.slice().sort((a, b) =>  a - b ));
 });
