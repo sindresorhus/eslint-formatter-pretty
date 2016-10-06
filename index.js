@@ -42,14 +42,38 @@ module.exports = results => {
 
 			messages
 				.sort((a, b) => {
-					const condition = (a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2);
+					if (a.fatal === b.fatal && a.severity === b.severity) {
+						if (a.line === b.line) {
+							const isColumnFirst = a.column < b.column;
 
-					if (condition) {
-						return 1;
-					}
+							if (isColumnFirst) {
+								return -1;
+							}
 
-					if (!condition) {
-						return -1;
+							if (!isColumnFirst) {
+								return 1;
+							}
+						} else {
+							const isLineFirst = a.line < b.line;
+
+							if (isLineFirst) {
+								return -1;
+							}
+
+							if (!isLineFirst) {
+								return 1;
+							}
+						}
+					} else {
+						const isError = (a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2);
+
+						if (isError) {
+							return 1;
+						}
+
+						if (!isError) {
+							return -1;
+						}
 					}
 
 					return 0;
