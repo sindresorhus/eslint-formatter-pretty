@@ -44,39 +44,15 @@ module.exports = results => {
 				.sort((a, b) => {
 					if (a.fatal === b.fatal && a.severity === b.severity) {
 						if (a.line === b.line) {
-							const isColumnFirst = a.column < b.column;
-
-							if (isColumnFirst) {
-								return -1;
-							}
-
-							if (!isColumnFirst) {
-								return 1;
-							}
-						} else {
-							const isLineFirst = a.line < b.line;
-
-							if (isLineFirst) {
-								return -1;
-							}
-
-							if (!isLineFirst) {
-								return 1;
-							}
-						}
-					} else {
-						const isError = (a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2);
-
-						if (isError) {
-							return 1;
+							return a.column < b.column ? -1 : 1;
 						}
 
-						if (!isError) {
-							return -1;
-						}
+						return a.line < b.line ? -1 : 1;
+					} else if ((a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2)) {
+						return 1;
 					}
 
-					return 0;
+					return -1;
 				})
 				.forEach(x => {
 					let message = x.message;
