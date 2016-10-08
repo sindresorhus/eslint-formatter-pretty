@@ -4,6 +4,7 @@ import m from '../';
 import defaultFixture from './fixtures/default';
 import noLineNumbers from './fixtures/no-line-numbers';
 import lineNumbers from './fixtures/line-numbers';
+import sortOrder from './fixtures/sort-by-severity-then-line-then-column';
 
 test('output', t => {
 	const output = m(defaultFixture);
@@ -24,4 +25,19 @@ test('show line numbers', t => {
 	console.log(output);
 	t.regex(stripAnsi(output), /⚠[ ]{3}0:0[ ]{2}Unexpected todo comment.[ ]{13}no-warning-comments/);
 	t.regex(stripAnsi(output), /✖[ ]{3}1:1[ ]{2}AVA should be imported as test.[ ]{6}ava\/use-test/);
+});
+
+test('sort by severity, then line number, then column', t => {
+	const output = m(sortOrder);
+	const sanitized = stripAnsi(output);
+	const indexes = [
+		sanitized.indexOf('⚠   1:1'),
+		sanitized.indexOf('⚠  10:2'),
+		sanitized.indexOf('✖   3:1'),
+		sanitized.indexOf('✖  30:1'),
+		sanitized.indexOf('✖  40:5'),
+		sanitized.indexOf('✖  40:8')
+	];
+	console.log(output);
+	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
 });

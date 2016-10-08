@@ -42,17 +42,17 @@ module.exports = results => {
 
 			messages
 				.sort((a, b) => {
-					const condition = (a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2);
+					if (a.fatal === b.fatal && a.severity === b.severity) {
+						if (a.line === b.line) {
+							return a.column < b.column ? -1 : 1;
+						}
 
-					if (condition) {
+						return a.line < b.line ? -1 : 1;
+					} else if ((a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2)) {
 						return 1;
 					}
 
-					if (!condition) {
-						return -1;
-					}
-
-					return 0;
+					return -1;
 				})
 				.forEach(x => {
 					let message = x.message;
