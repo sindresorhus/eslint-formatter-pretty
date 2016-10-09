@@ -27,7 +27,7 @@ test('show line numbers', t => {
 	t.regex(stripAnsi(output), /✖[ ]{3}1:1[ ]{2}AVA should be imported as test.[ ]{6}ava\/use-test/);
 });
 
-test('sort by severity, then line number, then column', t => {
+test('sort by severity, then line number, then column number', t => {
 	const output = m(sortOrder);
 	const sanitized = stripAnsi(output);
 	const indexes = [
@@ -37,6 +37,17 @@ test('sort by severity, then line number, then column', t => {
 		sanitized.indexOf('✖  30:1'),
 		sanitized.indexOf('✖  40:5'),
 		sanitized.indexOf('✖  40:8')
+	];
+	console.log(output);
+	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
+});
+
+test('display warning total before error total', t => {
+	const output = m(sortOrder);
+	const sanitized = stripAnsi(output);
+	const indexes = [
+		sanitized.indexOf('2 warnings'),
+		sanitized.indexOf('4  errors')
 	];
 	console.log(output);
 	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));

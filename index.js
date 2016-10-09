@@ -120,12 +120,12 @@ module.exports = results => {
 		return '';
 	}).join('\n') + '\n\n';
 
-	if (errorCount > 0) {
-		output += '  ' + chalk.red(`${errorCount}  ${plur('error', errorCount)}`) + '\n';
-	}
-
 	if (warningCount > 0) {
 		output += '  ' + chalk.yellow(`${warningCount} ${plur('warning', warningCount)}`) + '\n';
+	}
+
+	if (errorCount > 0) {
+		output += '  ' + chalk.red(`${errorCount}  ${plur('error', errorCount)}`) + '\n';
 	}
 
 	return (errorCount + warningCount) > 0 ? output : '';
