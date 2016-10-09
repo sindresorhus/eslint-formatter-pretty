@@ -125,7 +125,7 @@ module.exports = results => {
 	}
 
 	if (errorCount > 0) {
-		output += '  ' + chalk.red(`${errorCount}  ${plur('error', errorCount)}`) + '\n';
+		output += '  ' + chalk.red(`${errorCount} ${plur('error', errorCount)}`) + '\n';
 	}
 
 	return (errorCount + warningCount) > 0 ? output : '';

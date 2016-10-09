@@ -47,7 +47,7 @@ test('display warning total before error total', t => {
 	const sanitized = stripAnsi(output);
 	const indexes = [
 		sanitized.indexOf('2 warnings'),
-		sanitized.indexOf('4  errors')
+		sanitized.indexOf('4 errors')
 	];
 	console.log(output);
 	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
