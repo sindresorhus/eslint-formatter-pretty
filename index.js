@@ -57,7 +57,7 @@ module.exports = results => {
 				.forEach(x => {
 					let message = x.message;
 
-					// stylize inline code blocks
+					// Stylize inline code blocks
 					message = message.replace(/\B`(.*?)`\B|\B'(.*?)'\B/g, (m, p1, p2) => chalk.bold(p1 || p2));
 
 					const line = String(x.line || 0);
@@ -88,14 +88,14 @@ module.exports = results => {
 	let output = '\n';
 
 	if (process.stdout.isTTY && !process.env.CI) {
-		// make relative paths Cmd+click'able in iTerm
+		// Make relative paths Cmd+click'able in iTerm
 		output += ansiEscapes.iTerm.setCwd();
 	}
 
 	output += lines.map(x => {
 		if (x.type === 'header') {
-			// add the line number so it's Cmd+click'able in some terminals
-			// use dim & gray for terminals like iTerm that doesn't support `hidden`
+			// Add the line number so it's Cmd+click'able in some terminals
+			// Use dim & gray for terminals like iTerm that doesn't support `hidden`
 			const position = showLineNumbers ? chalk.hidden.dim.gray(`:${x.firstLineCol}`) : '';
 
 			return '  ' + chalk.underline(x.relativeFilePath) + position;
