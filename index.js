@@ -98,7 +98,7 @@ module.exports = results => {
 			// use dim & gray for terminals like iTerm that doesn't support `hidden`
 			const position = showLineNumbers ? chalk.hidden.dim.gray(`:${x.firstLineCol}`) : '';
 
-			return '  ' + chalk.underline(x.relativeFilePath + position);
+			return '  ' + chalk.underline(x.relativeFilePath) + position;
 		}
 
 		if (x.type === 'message') {
