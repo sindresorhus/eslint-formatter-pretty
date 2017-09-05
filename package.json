@@ -1,44 +1,41 @@
 {
-  "name": "eslint-formatter-pretty",
-  "version": "1.1.0",
-  "description": "Pretty ESLint formatter",
-  "license": "MIT",
-  "repository": "sindresorhus/eslint-formatter-pretty",
-  "author": {
-    "name": "Sindre Sorhus",
-    "email": "sindresorhus@gmail.com",
-    "url": "sindresorhus.com"
-  },
-  "engines": {
-    "node": ">=4"
-  },
-  "scripts": {
-    "test": "xo && ava"
-  },
-  "files": [
-    "index.js"
-  ],
-  "keywords": [
-    "eslint",
-    "eslint-formatter",
-    "formatter",
-    "reporter",
-    "lint",
-    "validate"
-  ],
-  "dependencies": {
-    "ansi-escapes": "^1.4.0",
-    "chalk": "^1.1.3",
-    "log-symbols": "^1.0.2",
-    "plur": "^2.1.2",
-    "string-width": "^2.0.0"
-  },
-  "devDependencies": {
-    "ava": "*",
-    "strip-ansi": "^3.0.1",
-    "xo": "*"
-  },
-  "xo": {
-    "esnext": true
-  }
+	"name": "eslint-formatter-pretty",
+	"version": "1.1.0",
+	"description": "Pretty ESLint formatter",
+	"license": "MIT",
+	"repository": "sindresorhus/eslint-formatter-pretty",
+	"author": {
+		"name": "Sindre Sorhus",
+		"email": "sindresorhus@gmail.com",
+		"url": "sindresorhus.com"
+	},
+	"engines": {
+		"node": ">=4"
+	},
+	"scripts": {
+		"test": "xo && ava"
+	},
+	"files": [
+		"index.js"
+	],
+	"keywords": [
+		"eslint",
+		"eslint-formatter",
+		"formatter",
+		"reporter",
+		"lint",
+		"validate"
+	],
+	"dependencies": {
+		"ansi-escapes": "^1.4.0",
+		"chalk": "^1.1.3",
+		"log-symbols": "^1.0.2",
+		"plur": "^2.1.2",
+		"string-width": "^2.0.0"
+	},
+	"devDependencies": {
+		"ava": "*",
+		"strip-ansi": "^3.0.1",
+		"xo": "*"
+	}
 }

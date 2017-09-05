@@ -1,6 +1,6 @@
 import test from 'ava';
 import stripAnsi from 'strip-ansi';
-import m from '../';
+import m from '..';
 import defaultFixture from './fixtures/default';
 import noLineNumbers from './fixtures/no-line-numbers';
 import lineNumbers from './fixtures/line-numbers';
