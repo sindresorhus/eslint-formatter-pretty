@@ -17,7 +17,7 @@ $ npm install --save-dev eslint-formatter-pretty
 ### ESLint CLI
 
 ```
-$ eslint --format=node_modules/eslint-formatter-pretty file.js
+$ eslint --format=pretty file.js
 ```
 
 ### [grunt-eslint](https://github.com/sindresorhus/grunt-eslint)
@@ -25,10 +25,10 @@ $ eslint --format=node_modules/eslint-formatter-pretty file.js
 ```js
 grunt.initConfig({
 	eslint: {
+		target: ['file.js'].
 		options: {
-			format: 'node_modules/eslint-formatter-pretty'
-		},
-		target: ['file.js']
+			format: 'pretty'
+		}
 	}
 });
 
@@ -45,62 +45,27 @@ const eslint = require('gulp-eslint');
 gulp.task('lint', () =>
 	gulp.src('file.js')
 		.pipe(eslint())
-		.pipe(eslint.format('node_modules/eslint-formatter-pretty'))
+		.pipe(eslint.format('pretty'))
 );
 ```
 
 ### [eslint-loader](https://github.com/MoOx/eslint-loader) *(webpack)*
 
-#### webpack v1
-
 ```js
 module.exports = {
 	entry: ['file.js'],
-	output: {
-		path: 'dist',
-		filename: '[name].js'
-	},
-	module: {
-		preLoaders: [
-			{
-				test: /\.js$/,
-				loader: 'eslint-loader',
-				exclude: /node_modules/
-			}
-		]
-	},
-	eslint: {
-		formatter: require('eslint-formatter-pretty')
-	}
-};
-```
-
-#### webpack v2
-
-```js
-module.exports = {
-	entry: ['file.js'],
-	output: {
-		path: 'dist',
-		filename: '[name].js'
-	},
 	module: {
 		rules: [
 			{
 				test: /\.js$/,
-				loader: 'eslint-loader'
-			}
-		]
-	},
-	plugins: [
-		new webpack.LoaderOptionsPlugin({
-			options: {
-				eslint: {
+				exclude: /node_modules/,
+				loader: 'eslint-loader',
+				options: {
 					formatter: require('eslint-formatter-pretty')
 				}
 			}
-		})
-	]
+		]
+	}
 };
 ```
 
