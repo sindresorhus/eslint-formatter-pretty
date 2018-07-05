@@ -107,7 +107,7 @@ module.exports = results => {
 				x.severity === 'warning' ? logSymbols.warning : logSymbols.error,
 				' '.repeat(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
 				' '.repeat(maxColumnWidth - x.columnWidth) + x.message,
-				' '.repeat(maxMessageWidth - x.messageWidth) + chalk.gray.dim(x.ruleId)
+				' '.repeat(maxMessageWidth - x.messageWidth) + chalk.dim(x.ruleId)
 			];
 
 			if (!showLineNumbers) {
