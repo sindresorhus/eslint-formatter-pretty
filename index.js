@@ -18,7 +18,7 @@ module.exports = results => {
 	results
 		.sort((a, b) => a.errorCount - b.errorCount)
 		.forEach(result => {
-			const messages = result.messages;
+			const {messages} = result;
 
 			if (messages.length === 0) {
 				return;
@@ -31,7 +31,7 @@ module.exports = results => {
 				lines.push({type: 'separator'});
 			}
 
-			const filePath = result.filePath;
+			const {filePath} = result;
 
 			lines.push({
 				type: 'header',
@@ -48,14 +48,16 @@ module.exports = results => {
 						}
 
 						return a.line < b.line ? -1 : 1;
-					} else if ((a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2)) {
+					}
+					
+					if ((a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2)) {
 						return 1;
 					}
 
 					return -1;
 				})
 				.forEach(x => {
-					let message = x.message;
+					let {message} = x;
 
 					// Stylize inline code blocks
 					message = message.replace(/\B`(.*?)`\B|\B'(.*?)'\B/g, (m, p1, p2) => chalk.bold(p1 || p2));
@@ -107,7 +109,7 @@ module.exports = results => {
 				x.severity === 'warning' ? logSymbols.warning : logSymbols.error,
 				' '.repeat(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
 				' '.repeat(maxColumnWidth - x.columnWidth) + x.message,
-				' '.repeat(maxMessageWidth - x.messageWidth) + chalk.gray.dim(x.ruleId)
+				' '.repeat(maxMessageWidth - x.messageWidth) + chalk.dim(x.ruleId)
 			];
 
 			if (!showLineNumbers) {
