@@ -31,11 +31,15 @@
 		"chalk": "^2.1.0",
 		"log-symbols": "^2.0.0",
 		"plur": "^2.1.2",
-		"string-width": "^2.0.0"
+		"string-width": "^2.0.0",
+		"supports-hyperlinks": "^1.0.1"
 	},
 	"devDependencies": {
 		"ava": "*",
 		"strip-ansi": "^4.0.0",
 		"xo": "*"
+	},
+	"ava": {
+		"serial": true
 	}
 }
