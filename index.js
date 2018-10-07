@@ -19,7 +19,7 @@ module.exports = results => {
 	results
 		.sort((a, b) => a.errorCount - b.errorCount)
 		.forEach(result => {
-			const {messages, filePath} = result;
+			const messages = result.messages;
 
 			if (messages.length === 0) {
 				return;
@@ -31,6 +31,8 @@ module.exports = results => {
 			if (lines.length !== 0) {
 				lines.push({type: 'separator'});
 			}
+
+			const filePath = result.filePath;
 
 			lines.push({
 				type: 'header',
@@ -47,16 +49,14 @@ module.exports = results => {
 						}
 
 						return a.line < b.line ? -1 : 1;
-					}
-
-					if ((a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2)) {
+					} else if ((a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2)) {
 						return 1;
 					}
 
 					return -1;
 				})
 				.forEach(x => {
-					let {message} = x;
+					let message = x.message;
 
 					// Stylize inline code blocks
 					message = message.replace(/\B`(.*?)`\B|\B'(.*?)'\B/g, (m, p1, p2) => chalk.bold(p1 || p2));
