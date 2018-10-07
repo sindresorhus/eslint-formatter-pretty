@@ -41,5 +41,16 @@
 	},
 	"ava": {
 		"serial": true
+	},
+	"xo": {
+		"overrides": [
+			{
+				"files": "index.js",
+				"rules": {
+					"prefer-destructuring": 0,
+					"no-else-return": 1
+				}
+			}
+		]
 	}
 }
