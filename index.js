@@ -109,7 +109,7 @@ module.exports = results => {
 				' '.repeat(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
 				' '.repeat(maxColumnWidth - x.columnWidth) + x.message,
 				' '.repeat(maxMessageWidth - x.messageWidth) +
-				(supportsHyperlink(process.stdout) ? ansiEscapes.link(chalk.gray.dim(x.ruleId), `https://eslint.org/docs/rules/${x.ruleId}`) : chalk.gray.dim(x.ruleId))
+				(supportsHyperlink(process.stdout) ? ansiEscapes.link(chalk.dim(x.ruleId), `https://eslint.org/docs/rules/${x.ruleId}`) : chalk.dim(x.ruleId))
 			];
 
 			if (!showLineNumbers) {
