@@ -29,6 +29,7 @@
 	"dependencies": {
 		"ansi-escapes": "^3.0.0",
 		"chalk": "^2.1.0",
+		"eslint-rule-docs": "^1.1.5",
 		"log-symbols": "^2.0.0",
 		"plur": "^2.1.2",
 		"string-width": "^2.0.0",

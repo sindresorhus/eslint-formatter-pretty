@@ -44,7 +44,7 @@ test('link rules to documentation when terminal supports links', t => {
 	enableHyperlinks();
 	const output = m(defaultFixture);
 	console.log(output);
-	t.true(output.includes(ansiEscapes.link(chalk.gray.dim('no-warning-comments'), 'https://eslint.org/docs/rules/no-warning-comments')));
+	t.true(output.includes(ansiEscapes.link(chalk.dim('no-warning-comments'), 'https://eslint.org/docs/rules/no-warning-comments')));
 });
 
 test('sort by severity, then line number, then column number', t => {
