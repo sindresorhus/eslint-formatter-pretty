@@ -5,6 +5,8 @@ const logSymbols = require('log-symbols');
 const plur = require('plur');
 const stringWidth = require('string-width');
 const ansiEscapes = require('ansi-escapes');
+const {supportsHyperlink} = require('supports-hyperlinks');
+const getRuleUrl = require('eslint-rule-docs');
 
 module.exports = results => {
 	const lines = [];
@@ -107,7 +109,8 @@ module.exports = results => {
 				x.severity === 'warning' ? logSymbols.warning : logSymbols.error,
 				' '.repeat(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
 				' '.repeat(maxColumnWidth - x.columnWidth) + x.message,
-				' '.repeat(maxMessageWidth - x.messageWidth) + chalk.gray.dim(x.ruleId)
+				' '.repeat(maxMessageWidth - x.messageWidth) +
+				(supportsHyperlink(process.stdout) ? ansiEscapes.link(chalk.dim(x.ruleId), getRuleUrl(x.ruleId).url) : chalk.gray.dim(x.ruleId))
 			];
 
 			if (!showLineNumbers) {
