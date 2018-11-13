@@ -5,6 +5,15 @@
 ![](screenshot.png)
 
 
+## Highlights
+
+- Pretty output.
+- Sorts results by severity.
+- Stylizes inline codeblocks in messages.
+- Command-click a rule ID to open its docs.
+- Command-click a header to reveal the first error in your editor. *(iTerm-only)*
+
+
 ## Install
 
 ```
@@ -13,6 +22,10 @@ $ npm install --save-dev eslint-formatter-pretty
 
 
 ## Usage
+
+### [XO](https://github.com/xojs/xo)
+
+Nothing to do. It's the default formatter.
 
 ### ESLint CLI
 
@@ -70,9 +83,11 @@ module.exports = {
 ```
 
 
-## Tip
+## Tips
 
-In iTerm, <kbd>Cmd</kbd>+click the filename header to open the file in your editor.
+In iTerm, <kbd>Command</kbd>-click the filename header to open the file in your editor.
+
+In [terminals with support for hyperlinks](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda#supporting-apps), <kbd>Command</kbd>-click the rule ID to open its docs.
 
 
 ## License

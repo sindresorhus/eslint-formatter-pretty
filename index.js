@@ -20,7 +20,7 @@ module.exports = results => {
 	results
 		.sort((a, b) => a.errorCount - b.errorCount)
 		.forEach(result => {
-			const messages = result.messages;
+			const {messages, filePath} = result;
 
 			if (messages.length === 0) {
 				return;
@@ -32,8 +32,6 @@ module.exports = results => {
 			if (lines.length !== 0) {
 				lines.push({type: 'separator'});
 			}
-
-			const filePath = result.filePath;
 
 			lines.push({
 				type: 'header',
@@ -50,14 +48,16 @@ module.exports = results => {
 						}
 
 						return a.line < b.line ? -1 : 1;
-					} else if ((a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2)) {
+					}
+
+					if ((a.fatal || a.severity === 2) && (!b.fatal || b.severity !== 2)) {
 						return 1;
 					}
 
 					return -1;
 				})
 				.forEach(x => {
-					let message = x.message;
+					let {message} = x;
 
 					// Stylize inline code blocks
 					message = message.replace(/\B`(.*?)`\B|\B'(.*?)'\B/g, (m, p1, p2) => chalk.bold(p1 || p2));
@@ -90,13 +90,13 @@ module.exports = results => {
 	let output = '\n';
 
 	if (process.stdout.isTTY && !process.env.CI) {
-		// Make relative paths Cmd+click'able in iTerm
+		// Make relative paths Command-clickable in iTerm
 		output += ansiEscapes.iTerm.setCwd();
 	}
 
 	output += lines.map(x => {
 		if (x.type === 'header') {
-			// Add the line number so it's Cmd+click'able in some terminals
+			// Add the line number so it's Command-click'able in some terminals
 			// Use dim & gray for terminals like iTerm that doesn't support `hidden`
 			const position = showLineNumbers ? chalk.hidden.dim.gray(`:${x.firstLineCol}`) : '';
 
@@ -110,7 +110,7 @@ module.exports = results => {
 				' '.repeat(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
 				' '.repeat(maxColumnWidth - x.columnWidth) + x.message,
 				' '.repeat(maxMessageWidth - x.messageWidth) +
-				(supportsHyperlink(process.stdout) ? ansiEscapes.link(chalk.dim(x.ruleId), getRuleUrl(x.ruleId).url) : chalk.gray.dim(x.ruleId))
+				(supportsHyperlink(process.stdout) ? ansiEscapes.link(chalk.dim(x.ruleId), getRuleUrl(x.ruleId).url) : chalk.dim(x.ruleId))
 			];
 
 			if (!showLineNumbers) {
