@@ -7,6 +7,28 @@ import defaultFixture from './fixtures/default';
 import noLineNumbers from './fixtures/no-line-numbers';
 import lineNumbers from './fixtures/line-numbers';
 import sortOrder from './fixtures/sort-by-severity-then-line-then-column';
+import messages from './fixtures/messages';
+
+const severityFilter = desiredSeverity => ({severity}) => severity === desiredSeverity;
+
+const fakeMessages = (desiredSeverity, desiredCount) => {
+	const ofDesiredSeverity = messages.filter(severityFilter(desiredSeverity));
+
+	if (ofDesiredSeverity.length < desiredCount) {
+		throw new Error(
+			`requested ${desiredCount} messages with severity ${desiredSeverity}. Only found ${desiredSeverity.length}.`
+		);
+	}
+
+	return ofDesiredSeverity.slice(0, desiredCount);
+};
+
+const fakeReport = (errorCount, warningCount) => ({
+	filePath: `${errorCount}-error.${warningCount}-warning.js`,
+	errorCount,
+	warningCount,
+	messages: fakeMessages(1, warningCount).concat(fakeMessages(2, errorCount))
+});
 
 const enableHyperlinks = () => {
 	process.env.FORCE_HYPERLINK = '1';
@@ -72,5 +94,55 @@ test('display warning total before error total', t => {
 		sanitized.indexOf('4 errors')
 	];
 	console.log(output);
+	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
+});
+
+test('files will be sorted with least errors at the bottom, but zero errors at the top', t => {
+	disableHyperlinks();
+	const reports = [
+		fakeReport(1, 0),
+		fakeReport(3, 0),
+		fakeReport(0, 1),
+		fakeReport(2, 2)
+	];
+	const output = m(reports);
+	const sanitized = stripAnsi(output);
+	const indexes = [
+		sanitized.indexOf('0-error.1-warning.js'),
+		sanitized.indexOf('3-error.0-warning.js'),
+		sanitized.indexOf('2-error.2-warning.js'),
+		sanitized.indexOf('1-error.0-warning.js')
+	];
+	console.log(output);
+	t.is(indexes.length, reports.length);
+	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
+});
+
+test('files with similar errorCounts will sort according to warningCounts', t => {
+	disableHyperlinks();
+	const reports = [
+		fakeReport(1, 0),
+		fakeReport(1, 2),
+		fakeReport(1, 1),
+		fakeReport(0, 1),
+		fakeReport(0, 2),
+		fakeReport(0, 3),
+		fakeReport(2, 2),
+		fakeReport(2, 1)
+	];
+	const output = m(reports);
+	const sanitized = stripAnsi(output);
+	const indexes = [
+		sanitized.indexOf('0-error.3-warning.js'),
+		sanitized.indexOf('0-error.2-warning.js'),
+		sanitized.indexOf('0-error.1-warning.js'),
+		sanitized.indexOf('2-error.2-warning.js'),
+		sanitized.indexOf('2-error.1-warning.js'),
+		sanitized.indexOf('1-error.2-warning.js'),
+		sanitized.indexOf('1-error.1-warning.js'),
+		sanitized.indexOf('1-error.0-warning.js')
+	];
+	console.log(output);
+	t.is(indexes.length, reports.length);
 	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
 });

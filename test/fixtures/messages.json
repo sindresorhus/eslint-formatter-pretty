@@ -1,0 +1,65 @@
+[
+	{
+		"ruleId": "no-warning-comments",
+		"severity": 1,
+		"message": "Unexpected 'todo' comment.",
+		"line": 1,
+		"column": 1,
+		"nodeType": "Line",
+		"source": "\t// TODO: fix this later"
+	},
+	{
+		"ruleId": "no-multiple-empty-lines",
+		"severity": 2,
+		"message": "More than 1 blank line not allowed.",
+		"line": 3,
+		"column": 1,
+		"nodeType": "Program",
+		"source": ""
+	},
+	{
+		"ruleId": "no-warning-comments",
+		"severity": 1,
+		"message": "Unexpected 'todo' comment.",
+		"line": 10,
+		"column": 2,
+		"nodeType": "Line",
+		"source": "\t// TODO: fix this later"
+	},
+	{
+		"ruleId": "no-warning-comments",
+		"severity": 1,
+		"message": "Unexpected 'todo' comment.",
+		"line": 15,
+		"column": 2,
+		"nodeType": "Line",
+		"source": "\t// TODO: fix this later"
+	},
+	{
+		"ruleId": "no-multiple-empty-lines",
+		"severity": 2,
+		"message": "More than 1 blank line not allowed.",
+		"line": 30,
+		"column": 1,
+		"nodeType": "Program",
+		"source": ""
+	},
+	{
+		"ruleId": "no-unused-vars",
+		"severity": 2,
+		"message": "'i' is defined but never used.",
+		"line": 40,
+		"column": 5,
+		"nodeType": "Identifier",
+		"source": "var i, j;"
+	},
+	{
+		"ruleId": "no-unused-vars",
+		"severity": 2,
+		"message": "'j' is defined but never used.",
+		"line": 40,
+		"column": 8,
+		"nodeType": "Identifier",
+		"source": "var i, j;"
+	}
+]
