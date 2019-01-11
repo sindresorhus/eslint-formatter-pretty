@@ -22,12 +22,15 @@ module.exports = results => {
 			if (a.errorCount === b.errorCount) {
 				return b.warningCount - a.warningCount;
 			}
+
 			if (a.errorCount === 0) {
 				return -1;
 			}
+
 			if (b.errorCount === 0) {
 				return 1;
 			}
+
 			return b.errorCount - a.errorCount;
 		})
 		.forEach(result => {
