@@ -38,6 +38,10 @@ const disableHyperlinks = () => {
 	process.env.FORCE_HYPERLINK = '0';
 };
 
+test.beforeEach(() => {
+	m.terminalWidth = 150;
+});
+
 test('output', t => {
 	disableHyperlinks();
 	const output = m(defaultFixture);
@@ -58,7 +62,7 @@ test('show line numbers', t => {
 	disableHyperlinks();
 	const output = m(lineNumbers);
 	console.log(output);
-	t.regex(stripAnsi(output), /⚠[ ]{3}0:0[ ]{2}Unexpected todo comment.[ ]{13}no-warning-comments/);
+	t.regex(stripAnsi(output), /⚠[ ]{3}0:0[ ]{2}TODO: fix this later[ ]{17}no-warning-comments/);
 	t.regex(stripAnsi(output), /✖[ ]{3}1:1[ ]{2}AVA should be imported as test.[ ]{6}ava\/use-test/);
 });
 
@@ -95,6 +99,24 @@ test('display warning total before error total', t => {
 	];
 	console.log(output);
 	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
+});
+
+test('long messages will be truncated', t => {
+	disableHyperlinks();
+	m.terminalWidth = 56;
+	const output = m(lineNumbers);
+	console.log(output);
+	t.regex(stripAnsi(output), /⚠[ ]{3}0:0[ ]{2}TODO: fix this later[ ]{2}no-warning-comments/);
+	t.regex(stripAnsi(output), /✖[ ]{3}1:1[ ]{2}AVA should be impor…[ ]{2}ava\/use-test/);
+});
+
+test('drop the ruleId before truncating warning comments"', t => {
+	disableHyperlinks();
+	m.terminalWidth = 54;
+	const output = m(lineNumbers);
+	console.log(output);
+	t.regex(stripAnsi(output), /⚠[ ]{3}0:0[ ]{2}TODO: fix this later/);
+	t.regex(stripAnsi(output), /✖[ ]{3}1:1[ ]{2}AVA should be imp…[ ]{2}ava\/use-test/);
 });
 
 test('files will be sorted with least errors at the bottom, but zero errors at the top', t => {

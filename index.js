@@ -7,15 +7,22 @@ const stringWidth = require('string-width');
 const ansiEscapes = require('ansi-escapes');
 const {supportsHyperlink} = require('supports-hyperlinks');
 const getRuleUrl = require('eslint-rule-docs');
+const termSize = require('term-size');
+const cliTruncate = require('cli-truncate');
 
-module.exports = results => {
+const formatter = results => {
 	const lines = [];
 	let errorCount = 0;
 	let warningCount = 0;
 	let maxLineWidth = 0;
 	let maxColumnWidth = 0;
 	let maxMessageWidth = 0;
+	let maxRuleIdWidth = 0;
+	let maxPrintedWidth = 0;
 	let showLineNumbers = false;
+
+	// Allow terminalWidth to be easily manipulated by tests.
+	const terminalWidth = formatter.terminalWidth || termSize().columns;
 
 	results
 		.sort((a, b) => {
@@ -72,6 +79,12 @@ module.exports = results => {
 				})
 				.forEach(x => {
 					let {message} = x;
+					let isWarningComment = false;
+
+					if (x.ruleId === 'no-warning-comments') {
+						isWarningComment = true;
+						message = x.source.trim().replace(/^\/\/\s*|\/\*\s*/, '');
+					}
 
 					// Stylize inline code blocks
 					message = message.replace(/\B`(.*?)`\B|\B'(.*?)'\B/g, (m, p1, p2) => chalk.bold(p1 || p2));
@@ -81,10 +94,18 @@ module.exports = results => {
 					const lineWidth = stringWidth(line);
 					const columnWidth = stringWidth(column);
 					const messageWidth = stringWidth(message);
+					const ruleIdWidth = stringWidth(x.ruleId);
+
+					let printedWidth = lineWidth + columnWidth + messageWidth + 8;
+					if (!isWarningComment) {
+						printedWidth += ruleIdWidth + 2;
+					}
 
 					maxLineWidth = Math.max(lineWidth, maxLineWidth);
 					maxColumnWidth = Math.max(columnWidth, maxColumnWidth);
 					maxMessageWidth = Math.max(messageWidth, maxMessageWidth);
+					maxRuleIdWidth = Math.max(maxRuleIdWidth, ruleIdWidth);
+					maxPrintedWidth = Math.max(maxPrintedWidth, printedWidth);
 					showLineNumbers = showLineNumbers || x.line || x.column;
 
 					lines.push({
@@ -96,10 +117,22 @@ module.exports = results => {
 						columnWidth,
 						message,
 						messageWidth,
+						isWarningComment,
 						ruleId: x.ruleId || ''
 					});
 				});
 		});
+
+	let truncateMessagesTo = maxMessageWidth;
+	let truncateWarningCommentsTo = maxMessageWidth;
+
+	if (maxPrintedWidth > terminalWidth) {
+		truncateMessagesTo = maxMessageWidth - (maxPrintedWidth - terminalWidth);
+		truncateWarningCommentsTo = truncateMessagesTo + maxRuleIdWidth + 2;
+
+		truncateMessagesTo = Math.max(0, truncateMessagesTo);
+		truncateWarningCommentsTo = Math.max(0, truncateWarningCommentsTo);
+	}
 
 	let output = '\n';
 
@@ -118,17 +151,27 @@ module.exports = results => {
 		}
 
 		if (x.type === 'message') {
+			const dropRuleId = x.isWarningComment && (stringWidth(x.message) > truncateMessagesTo);
+			const truncationWidth = dropRuleId ? truncateWarningCommentsTo : truncateMessagesTo;
+
+			const message = cliTruncate(x.message, truncationWidth);
+			const messageWidth = stringWidth(message);
+
 			const line = [
 				'',
 				x.severity === 'warning' ? logSymbols.warning : logSymbols.error,
 				' '.repeat(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
-				' '.repeat(maxColumnWidth - x.columnWidth) + x.message,
-				' '.repeat(maxMessageWidth - x.messageWidth) +
+				' '.repeat(maxColumnWidth - x.columnWidth) + message,
+				' '.repeat(truncationWidth - messageWidth) +
 				(supportsHyperlink(process.stdout) ? ansiEscapes.link(chalk.dim(x.ruleId), getRuleUrl(x.ruleId).url) : chalk.dim(x.ruleId))
 			];
 
 			if (!showLineNumbers) {
 				line.splice(2, 1);
+			}
+
+			if (dropRuleId) {
+				line.pop();
 			}
 
 			return line.join('  ');
@@ -147,3 +190,5 @@ module.exports = results => {
 
 	return (errorCount + warningCount) > 0 ? output : '';
 };
+
+module.exports = formatter;

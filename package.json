@@ -29,11 +29,13 @@
 	"dependencies": {
 		"ansi-escapes": "^3.0.0",
 		"chalk": "^2.1.0",
+		"cli-truncate": "^1.1.0",
 		"eslint-rule-docs": "^1.1.5",
 		"log-symbols": "^2.0.0",
 		"plur": "^3.0.1",
 		"string-width": "^2.0.0",
-		"supports-hyperlinks": "^1.0.1"
+		"supports-hyperlinks": "^1.0.1",
+		"term-size": "^1.2.0"
 	},
 	"devDependencies": {
 		"ava": "^0.25.0",
