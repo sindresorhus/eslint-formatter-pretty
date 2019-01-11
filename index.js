@@ -47,11 +47,13 @@ module.exports = results => {
 				lines.push({type: 'separator'});
 			}
 
+			const firstErrorOrWarning = messages.find(({severity}) => severity === 2) || messages[0];
+
 			lines.push({
 				type: 'header',
 				filePath,
 				relativeFilePath: path.relative('.', filePath),
-				firstLineCol: messages[0].line + ':' + messages[0].column
+				firstLineCol: firstErrorOrWarning.line + ':' + firstErrorOrWarning.column
 			});
 
 			messages
