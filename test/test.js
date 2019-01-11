@@ -31,7 +31,7 @@ test('file heading links to the first error line', t => {
 	t.regex(stripAnsi(output), /index\.js:18:2\n/);
 });
 
-test('file heading links to the first warning line, if no errors in the file', t => {
+test('file heading links to the first warning line if no errors in the file', t => {
 	disableHyperlinks();
 	const output = m(defaultFixture);
 	console.log(output);
