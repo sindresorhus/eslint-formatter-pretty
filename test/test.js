@@ -20,8 +20,22 @@ test('output', t => {
 	disableHyperlinks();
 	const output = m(defaultFixture);
 	console.log(output);
-	t.regex(stripAnsi(output), /index\.js:8:2\n/);
+	t.regex(stripAnsi(output), /index\.js:18:2\n/);
 	t.regex(stripAnsi(output), /✖[ ]{3}1:1[ ]{2}AVA should be imported as test.[ ]{6}ava\/use-test/);
+});
+
+test('file heading links to the first error line', t => {
+	disableHyperlinks();
+	const output = m(defaultFixture);
+	console.log(output);
+	t.regex(stripAnsi(output), /index\.js:18:2\n/);
+});
+
+test('file heading links to the first warning line, if no errors in the file', t => {
+	disableHyperlinks();
+	const output = m(defaultFixture);
+	console.log(output);
+	t.regex(stripAnsi(output), /test\.js:1:1\n/);
 });
 
 test('no line numbers', t => {
