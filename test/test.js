@@ -6,6 +6,7 @@ import m from '..';
 import defaultFixture from './fixtures/default';
 import noLineNumbers from './fixtures/no-line-numbers';
 import lineNumbers from './fixtures/line-numbers';
+import lineNumbersNoSource from './fixtures/line-numbers-no-source';
 import sortOrder from './fixtures/sort-by-severity-then-line-then-column';
 import messages from './fixtures/messages';
 
@@ -117,6 +118,14 @@ test('drop the ruleId before truncating warning comments"', t => {
 	console.log(output);
 	t.regex(stripAnsi(output), /⚠[ ]{3}0:0[ ]{2}TODO: fix this later/);
 	t.regex(stripAnsi(output), /✖[ ]{3}1:1[ ]{2}AVA should be imp…[ ]{2}ava\/use-test/);
+});
+
+test('gracefully handle missing source for warning comments', t => {
+	disableHyperlinks();
+	const output = m(lineNumbersNoSource);
+	console.log(output);
+	t.regex(stripAnsi(output), /⚠[ ]{3}0:0[ ]{2}Unexpected todo comment.[ ]{13}no-warning-comments/);
+	t.regex(stripAnsi(output), /✖[ ]{3}1:1[ ]{2}AVA should be imported as test.[ ]{6}ava\/use-test/);
 });
 
 test('files will be sorted with least errors at the bottom, but zero errors at the top', t => {

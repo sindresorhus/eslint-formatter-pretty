@@ -7,7 +7,6 @@ const stringWidth = require('string-width');
 const ansiEscapes = require('ansi-escapes');
 const {supportsHyperlink} = require('supports-hyperlinks');
 const getRuleUrl = require('eslint-rule-docs');
-const termSize = require('term-size');
 const cliTruncate = require('cli-truncate');
 
 const formatter = results => {
@@ -22,7 +21,7 @@ const formatter = results => {
 	let showLineNumbers = false;
 
 	// Allow terminalWidth to be easily manipulated by tests.
-	const terminalWidth = formatter.terminalWidth || termSize().columns;
+	const terminalWidth = formatter.terminalWidth || (process.stdout && process.stdout.getWindowsSize().width) || 80;
 
 	results
 		.sort((a, b) => {
@@ -81,7 +80,7 @@ const formatter = results => {
 					let {message} = x;
 					let isWarningComment = false;
 
-					if (x.ruleId === 'no-warning-comments') {
+					if (x.ruleId === 'no-warning-comments' && x.source) {
 						isWarningComment = true;
 						message = x.source.trim().replace(/^\/\/\s*|\/\*\s*/, '');
 					}
