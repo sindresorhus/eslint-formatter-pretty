@@ -6,7 +6,7 @@ const plur = require('plur');
 const stringWidth = require('string-width');
 const ansiEscapes = require('ansi-escapes');
 const {supportsHyperlink} = require('supports-hyperlinks');
-const getRuleUrl = require('eslint-rule-docs');
+const getRuleDocs = require('eslint-rule-docs');
 
 module.exports = results => {
 	const lines = [];
@@ -120,13 +120,18 @@ module.exports = results => {
 		}
 
 		if (x.type === 'message') {
+			let ruleUrl;
+			try {
+				ruleUrl = getRuleDocs(x.ruleId).url;
+			} catch (_) {}
+
 			const line = [
 				'',
 				x.severity === 'warning' ? logSymbols.warning : logSymbols.error,
 				' '.repeat(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
 				' '.repeat(maxColumnWidth - x.columnWidth) + x.message,
 				' '.repeat(maxMessageWidth - x.messageWidth) +
-				(supportsHyperlink(process.stdout) ? ansiEscapes.link(chalk.dim(x.ruleId), getRuleUrl(x.ruleId).url) : chalk.dim(x.ruleId))
+				(ruleUrl && supportsHyperlink(process.stdout) ? ansiEscapes.link(chalk.dim(x.ruleId), ruleUrl) : chalk.dim(x.ruleId))
 			];
 
 			if (!showLineNumbers) {
