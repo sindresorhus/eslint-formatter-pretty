@@ -1,46 +1,63 @@
 {
-	"name": "eslint-formatter-pretty",
-	"version": "2.1.1",
-	"description": "Pretty ESLint formatter",
-	"license": "MIT",
-	"repository": "sindresorhus/eslint-formatter-pretty",
-	"author": {
-		"name": "Sindre Sorhus",
-		"email": "sindresorhus@gmail.com",
-		"url": "sindresorhus.com"
-	},
-	"engines": {
-		"node": ">=6"
-	},
-	"scripts": {
-		"test": "xo && ava"
-	},
-	"files": [
-		"index.js"
-	],
-	"keywords": [
-		"eslint",
-		"eslint-formatter",
-		"formatter",
-		"reporter",
-		"lint",
-		"validate"
-	],
-	"dependencies": {
-		"ansi-escapes": "^3.1.0",
-		"chalk": "^2.1.0",
-		"eslint-rule-docs": "^1.1.5",
-		"log-symbols": "^2.0.0",
-		"plur": "^3.0.1",
-		"string-width": "^2.0.0",
-		"supports-hyperlinks": "^1.0.1"
-	},
-	"devDependencies": {
-		"ava": "^0.25.0",
-		"strip-ansi": "^5.0.0",
-		"xo": "^0.23.0"
-	},
-	"ava": {
-		"serial": true
-	}
+  "name": "eslint-formatter-github",
+  "version": "2.1.1",
+  "description": "Post eslint results to Github PRs as annotations.",
+  "license": "MIT",
+  "repository": "hipstersmoothie/eslint-formatter-github",
+  "main": "dist/index.js",
+  "author": {
+    "name": "Andrew Lisowski",
+    "email": "lisowski54@gmail.com"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "lint": "eslint src --ext .ts,.js --format './dist/index.js'"
+  },
+  "keywords": [
+    "eslint",
+    "eslint-formatter",
+    "formatter",
+    "reporter",
+    "lint",
+    "validate"
+  ],
+  "peerDependencies": {
+    "eslint": ">= 5.x"
+  },
+  "dependencies": {
+    "@octokit/rest": "^16.28.7",
+    "chalk": "^2.1.0",
+    "plur": "^3.0.1"
+  },
+  "devDependencies": {
+    "@types/eslint": "^4.16.8",
+    "@typescript-eslint/eslint-plugin": "^2.0.0",
+    "@typescript-eslint/parser": "^2.0.0",
+    "eslint": "6.1.0",
+    "eslint-config-airbnb": "18.0.1",
+    "eslint-config-airbnb-base": "^14.0.0",
+    "eslint-config-prettier": "^6.0.0",
+    "eslint-config-xo": "^0.26.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsdoc": "^15.8.1",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.0",
+    "husky": "^3.0.4",
+    "lint-staged": "^9.2.3",
+    "prettier": "^1.18.2",
+    "strip-ansi": "^5.0.0",
+    "typescript": "^3.5.3"
+  },
+  "ava": {
+    "serial": true
+  },
+  "lint-staged": {
+    "*.{js,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
+  },
+  "prettier": {
+    "singleQuote": true
+  }
 }
