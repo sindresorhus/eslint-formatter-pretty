@@ -2,12 +2,13 @@ import test from 'ava';
 import stripAnsi from 'strip-ansi';
 import ansiEscapes from 'ansi-escapes';
 import chalk from 'chalk';
-import m from '..';
 import defaultFixture from './fixtures/default';
 import noLineNumbers from './fixtures/no-line-numbers';
 import lineNumbers from './fixtures/line-numbers';
 import sortOrder from './fixtures/sort-by-severity-then-line-then-column';
 import messages from './fixtures/messages';
+import data from './fixtures/data';
+import m from '..';
 
 const severityFilter = desiredSeverity => ({severity}) => severity === desiredSeverity;
 
@@ -159,4 +160,11 @@ test('files with similar errorCounts will sort according to warningCounts', t =>
 	console.log(output);
 	t.is(indexes.length, reports.length);
 	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
+});
+
+test('use the `rulesMeta` property to get docs URL', t => {
+	enableHyperlinks();
+	const output = m(defaultFixture, data);
+	console.log(output);
+	t.true(output.includes(ansiEscapes.link(chalk.dim('no-warning-comments'), 'https://eslint.org/docs/rules/test/no-warning-comments')));
 });

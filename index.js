@@ -8,7 +8,7 @@ const ansiEscapes = require('ansi-escapes');
 const {supportsHyperlink} = require('supports-hyperlinks');
 const getRuleDocs = require('eslint-rule-docs');
 
-module.exports = results => {
+module.exports = (results, data) => {
 	const lines = [];
 	let errorCount = 0;
 	let warningCount = 0;
@@ -122,8 +122,10 @@ module.exports = results => {
 		if (x.type === 'message') {
 			let ruleUrl;
 			try {
+				ruleUrl = data.rulesMeta[x.ruleId].docs.url;
+			} catch (_) {
 				ruleUrl = getRuleDocs(x.ruleId).url;
-			} catch (_) {}
+			}
 
 			const line = [
 				'',
