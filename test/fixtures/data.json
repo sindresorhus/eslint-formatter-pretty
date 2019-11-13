@@ -1,0 +1,14 @@
+{
+	"rulesMeta": {
+		"no-warning-comments": {
+			"type": "suggestion",
+			"docs": {
+				"description": "disallow specified warning terms in comments",
+				"category": "Best Practices",
+				"recommended": false,
+				"url": "https://eslint.org/docs/rules/test/no-warning-comments"
+			},
+			"schema": []
+		}
+	}
+}
