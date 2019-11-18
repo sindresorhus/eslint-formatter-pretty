@@ -168,3 +168,10 @@ test('use the `rulesMeta` property to get docs URL', t => {
 	console.log(output);
 	t.true(output.includes(ansiEscapes.link(chalk.dim('no-warning-comments'), 'https://eslint.org/docs/rules/test/no-warning-comments')));
 });
+
+test('doesn\'t throw errors when rule docs aren\'t found', t => {
+	enableHyperlinks();
+	const output = eslintFormatterPretty(defaultFixture, data);
+	console.log(output);
+	t.true(output.includes('@typescript-eslint/no-unused-vars'));
+});
