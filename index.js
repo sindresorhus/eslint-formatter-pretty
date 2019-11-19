@@ -121,10 +121,13 @@ module.exports = (results, data) => {
 
 		if (x.type === 'message') {
 			let ruleUrl;
+
 			try {
 				ruleUrl = data.rulesMeta[x.ruleId].docs.url;
 			} catch (_) {
-				ruleUrl = getRuleDocs(x.ruleId).url;
+				try {
+					ruleUrl = getRuleDocs(x.ruleId).url;
+				} catch (_) {}
 			}
 
 			const line = [
