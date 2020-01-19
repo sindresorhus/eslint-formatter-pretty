@@ -158,7 +158,6 @@ function format(results, data) {
 	}
 
 	return (errorCount + warningCount) > 0 ? output : '';
-
 }
 
 module.exports = format;
