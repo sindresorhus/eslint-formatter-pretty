@@ -7,6 +7,6 @@ import { CLIEngine } from "eslint";
  * @param data - extended information related to the analysis results
  * @returns - formatted output
  */
-declare const format: CLIEngine.Formatter;
+declare function format(results: CLIEngine.LintResult[], data?: {}): string;
 
 export = format;
