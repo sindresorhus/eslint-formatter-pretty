@@ -1,12 +1,12 @@
-import { CLIEngine } from "eslint";
+import {CLIEngine} from 'eslint';
 
 /**
- * Function formatting the lint results.
- * 
- * @param results - containing the lint results for individual files
- * @param data - extended information related to the analysis results
- * @returns - formatted output
- */
+Format the lint results.
+
+@param results - Contains the lint results for individual files.
+@param data - Extended information related to the analysis results.
+@returns The formatted output.
+*/
 declare function format(results: CLIEngine.LintResult[], data?: {}): string;
 
 export = format;
