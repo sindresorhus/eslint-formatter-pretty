@@ -37,7 +37,7 @@
 		"supports-hyperlinks": "^2.0.0"
 	},
 	"devDependencies": {
-		"@types/eslint": "^6.1.3",
+		"@types/eslint": "^6.1.5",
 		"ava": "^1.4.1",
 		"strip-ansi": "^6.0.0",
 		"tsd": "^0.11.0",
