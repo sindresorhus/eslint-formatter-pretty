@@ -7,6 +7,6 @@ Format the lint results.
 @param data - Extended information related to the analysis results.
 @returns The formatted output.
 */
-declare function format(results: CLIEngine.LintResult[], data?: {}): string;
+declare const format: CLIEngine.Formatter;
 
 export = format;
