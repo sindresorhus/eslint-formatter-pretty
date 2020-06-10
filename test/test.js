@@ -1,3 +1,4 @@
+/* eslint "ava/no-import-test-files": "off" */
 import test from 'ava';
 import stripAnsi from 'strip-ansi';
 import ansiEscapes from 'ansi-escapes';
@@ -10,10 +11,8 @@ import messages from './fixtures/messages.json';
 import data from './fixtures/data.json';
 import eslintFormatterPretty from '..';
 
-const severityFilter = desiredSeverity => ({severity}) => severity === desiredSeverity;
-
 const fakeMessages = (desiredSeverity, desiredCount) => {
-	const ofDesiredSeverity = messages.filter(severityFilter(desiredSeverity));
+	const ofDesiredSeverity = messages.filter(({severity}) => severity === desiredSeverity);
 
 	if (ofDesiredSeverity.length < desiredCount) {
 		throw new Error(
@@ -44,7 +43,7 @@ test('output', t => {
 	const output = eslintFormatterPretty(defaultFixture);
 	console.log(output);
 	t.regex(stripAnsi(output), /index\.js:18:2\n/);
-	t.regex(stripAnsi(output), /✖[ ]{3}1:1[ ]{2}AVA should be imported as test.[ ]{6}ava\/use-test/);
+	t.regex(stripAnsi(output), /✖ {3}1:1 {2}AVA should be imported as test. {6}ava\/use-test/);
 });
 
 test('file heading links to the first error line', t => {
@@ -66,15 +65,15 @@ test('no line numbers', t => {
 	const output = eslintFormatterPretty(noLineNumbers);
 	console.log(output);
 	t.regex(stripAnsi(output), /index\.js\n/);
-	t.regex(stripAnsi(output), /✖[ ]{2}AVA should be imported as test.[ ]{6}ava\/use-test/);
+	t.regex(stripAnsi(output), /✖ {2}AVA should be imported as test. {6}ava\/use-test/);
 });
 
 test('show line numbers', t => {
 	disableHyperlinks();
 	const output = eslintFormatterPretty(lineNumbers);
 	console.log(output);
-	t.regex(stripAnsi(output), /⚠[ ]{3}0:0[ ]{2}Unexpected todo comment.[ ]{13}no-warning-comments/);
-	t.regex(stripAnsi(output), /✖[ ]{3}1:1[ ]{2}AVA should be imported as test.[ ]{6}ava\/use-test/);
+	t.regex(stripAnsi(output), /⚠ {3}0:0 {2}Unexpected todo comment. {13}no-warning-comments/);
+	t.regex(stripAnsi(output), /✖ {3}1:1 {2}AVA should be imported as test. {6}ava\/use-test/);
 });
 
 test('link rules to documentation when terminal supports links', t => {
