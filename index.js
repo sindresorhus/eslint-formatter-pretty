@@ -124,10 +124,10 @@ module.exports = (results, data) => {
 
 			try {
 				ruleUrl = data.rulesMeta[x.ruleId].docs.url;
-			} catch (_) {
+			} catch {
 				try {
 					ruleUrl = getRuleDocs(x.ruleId).url;
-				} catch (_) {}
+				} catch {}
 			}
 
 			const line = [
