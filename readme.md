@@ -1,9 +1,8 @@
-# eslint-formatter-pretty [![Build Status](https://travis-ci.org/sindresorhus/eslint-formatter-pretty.svg?branch=master)](https://travis-ci.org/sindresorhus/eslint-formatter-pretty)
+# eslint-formatter-pretty [![Build Status](https://travis-ci.com/sindresorhus/eslint-formatter-pretty.svg?branch=master)](https://travis-ci.com/github/sindresorhus/eslint-formatter-pretty)
 
 > Pretty formatter for [ESLint](https://eslint.org)
 
 ![](screenshot.png)
-
 
 ## Highlights
 
@@ -13,13 +12,11 @@
 - Command-click a rule ID to open its docs.
 - Command-click a header to reveal the first error in your editor. *(iTerm-only)*
 
-
 ## Install
 
 ```
 $ npm install --save-dev eslint-formatter-pretty
 ```
-
 
 ## Usage
 
@@ -81,7 +78,6 @@ module.exports = {
 	}
 };
 ```
-
 
 ## Tips
 
