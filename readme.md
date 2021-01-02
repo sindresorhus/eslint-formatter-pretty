@@ -1,4 +1,4 @@
-# eslint-formatter-pretty [![Build Status](https://travis-ci.com/sindresorhus/eslint-formatter-pretty.svg?branch=master)](https://travis-ci.com/github/sindresorhus/eslint-formatter-pretty)
+# eslint-formatter-pretty
 
 > Pretty formatter for [ESLint](https://eslint.org)
 
