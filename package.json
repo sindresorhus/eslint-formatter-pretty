@@ -1,6 +1,6 @@
 {
 	"name": "eslint-formatter-pretty",
-	"version": "4.0.0",
+	"version": "4.1.0",
 	"description": "Pretty ESLint formatter",
 	"license": "MIT",
 	"repository": "sindresorhus/eslint-formatter-pretty",
