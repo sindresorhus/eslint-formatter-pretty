@@ -14,10 +14,11 @@
 		"node": ">=10"
 	},
 	"scripts": {
-		"test": "xo && ava"
+		"test": "xo && ava && tsd"
 	},
 	"files": [
-		"index.js"
+		"index.js",
+		"index.d.ts"
 	],
 	"keywords": [
 		"eslint",
@@ -28,6 +29,7 @@
 		"validate"
 	],
 	"dependencies": {
+		"@types/eslint": "^7.2.13",
 		"ansi-escapes": "^4.2.1",
 		"chalk": "^4.1.0",
 		"eslint-rule-docs": "^1.1.5",
@@ -39,6 +41,8 @@
 	"devDependencies": {
 		"ava": "^2.4.0",
 		"strip-ansi": "^6.0.0",
+		"tsd": "^0.17.0",
+		"typescript": "^4.3.2",
 		"xo": "^0.32.0"
 	},
 	"ava": {
