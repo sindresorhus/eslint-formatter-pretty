@@ -84,3 +84,7 @@ module.exports = {
 In iTerm, <kbd>Command</kbd>-click the filename header to open the file in your editor.
 
 In [terminals with support for hyperlinks](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda#supporting-apps), <kbd>Command</kbd>-click the rule ID to open its docs.
+
+## Related
+
+- [eslint-formatter-mo](https://github.com/fengzilong/eslint-formatter-mo) - Another good-lookin' ESLint formatter for delightful readability
