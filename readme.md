@@ -14,8 +14,8 @@
 
 ## Install
 
-```
-$ npm install --save-dev eslint-formatter-pretty
+```sh
+npm install --save-dev eslint-formatter-pretty
 ```
 
 ## Usage
@@ -26,8 +26,8 @@ Nothing to do. It's the default formatter.
 
 ### ESLint CLI
 
-```
-$ eslint --format=pretty file.js
+```sh
+eslint --format=pretty file.js
 ```
 
 ### [grunt-eslint](https://github.com/sindresorhus/grunt-eslint)

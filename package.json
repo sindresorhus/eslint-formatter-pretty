@@ -11,7 +11,7 @@
 		"url": "https://sindresorhus.com"
 	},
 	"engines": {
-		"node": ">=10"
+		"node": ">=14.16"
 	},
 	"scripts": {
 		"test": "xo && ava && tsd"
@@ -32,7 +32,7 @@
 		"@types/eslint": "^8.0.0",
 		"ansi-escapes": "^4.2.1",
 		"chalk": "^4.1.0",
-		"eslint-rule-docs": "^1.1.5",
+		"eslint-rule-docs": "^1.1.235",
 		"log-symbols": "^4.0.0",
 		"plur": "^4.0.0",
 		"string-width": "^4.2.0",
