@@ -1,22 +1,34 @@
 /* eslint "ava/no-import-test-files": "off" */
+import {createRequire} from 'node:module';
+import process from 'node:process';
 import test from 'ava';
 import stripAnsi from 'strip-ansi';
 import ansiEscapes from 'ansi-escapes';
 import chalk from 'chalk';
-import defaultFixture from './fixtures/default.json';
-import noLineNumbers from './fixtures/no-line-numbers.json';
-import lineNumbers from './fixtures/line-numbers.json';
-import sortOrder from './fixtures/sort-by-severity-then-line-then-column.json';
-import messages from './fixtures/messages.json';
-import data from './fixtures/data.json';
-import eslintFormatterPretty from '..';
+import eslintFormatterPretty from '../index.js'; // eslint-disable-line import/order
+
+/// import defaultFixture from './fixtures/default.json';
+// import noLineNumbers from './fixtures/no-line-numbers.json';
+// import lineNumbers from './fixtures/line-numbers.json';
+// import sortOrder from './fixtures/sort-by-severity-then-line-then-column.json';
+// import messages from './fixtures/messages.json';
+// import data from './fixtures/data.json';
+
+const require = createRequire(import.meta.url);
+
+const defaultFixture = require('./fixtures/default.json');
+const noLineNumbers = require('./fixtures/no-line-numbers.json');
+const lineNumbers = require('./fixtures/line-numbers.json');
+const sortOrder = require('./fixtures/sort-by-severity-then-line-then-column.json');
+const messages = require('./fixtures/messages.json');
+const data = require('./fixtures/data.json');
 
 const fakeMessages = (desiredSeverity, desiredCount) => {
 	const ofDesiredSeverity = messages.filter(({severity}) => severity === desiredSeverity);
 
 	if (ofDesiredSeverity.length < desiredCount) {
 		throw new Error(
-			`requested ${desiredCount} messages with severity ${desiredSeverity}. Only found ${desiredSeverity.length}.`
+			`requested ${desiredCount} messages with severity ${desiredSeverity}. Only found ${desiredSeverity.length}.`,
 		);
 	}
 
@@ -27,7 +39,10 @@ const fakeReport = (errorCount, warningCount) => ({
 	filePath: `${errorCount}-error.${warningCount}-warning.js`,
 	errorCount,
 	warningCount,
-	messages: fakeMessages(1, warningCount).concat(fakeMessages(2, errorCount))
+	messages: [
+		...fakeMessages(1, warningCount),
+		...fakeMessages(2, errorCount),
+	],
 });
 
 const enableHyperlinks = () => {
@@ -93,10 +108,10 @@ test('sort by severity, then line number, then column number', t => {
 		sanitized.indexOf('✖   3:1'),
 		sanitized.indexOf('✖  30:1'),
 		sanitized.indexOf('✖  40:5'),
-		sanitized.indexOf('✖  40:8')
+		sanitized.indexOf('✖  40:8'),
 	];
 	console.log(output);
-	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
+	t.deepEqual(indexes, [...indexes].sort((a, b) => a - b));
 });
 
 test('display warning total before error total', t => {
@@ -105,10 +120,10 @@ test('display warning total before error total', t => {
 	const sanitized = stripAnsi(output);
 	const indexes = [
 		sanitized.indexOf('2 warnings'),
-		sanitized.indexOf('4 errors')
+		sanitized.indexOf('4 errors'),
 	];
 	console.log(output);
-	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
+	t.deepEqual(indexes, [...indexes].sort((a, b) => a - b));
 });
 
 test('files will be sorted with least errors at the bottom, but zero errors at the top', t => {
@@ -117,7 +132,7 @@ test('files will be sorted with least errors at the bottom, but zero errors at t
 		fakeReport(1, 0),
 		fakeReport(3, 0),
 		fakeReport(0, 1),
-		fakeReport(2, 2)
+		fakeReport(2, 2),
 	];
 	const output = eslintFormatterPretty(reports);
 	const sanitized = stripAnsi(output);
@@ -125,11 +140,11 @@ test('files will be sorted with least errors at the bottom, but zero errors at t
 		sanitized.indexOf('0-error.1-warning.js'),
 		sanitized.indexOf('3-error.0-warning.js'),
 		sanitized.indexOf('2-error.2-warning.js'),
-		sanitized.indexOf('1-error.0-warning.js')
+		sanitized.indexOf('1-error.0-warning.js'),
 	];
 	console.log(output);
 	t.is(indexes.length, reports.length);
-	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
+	t.deepEqual(indexes, [...indexes].sort((a, b) => a - b));
 });
 
 test('files with similar errorCounts will sort according to warningCounts', t => {
@@ -142,7 +157,7 @@ test('files with similar errorCounts will sort according to warningCounts', t =>
 		fakeReport(0, 2),
 		fakeReport(0, 3),
 		fakeReport(2, 2),
-		fakeReport(2, 1)
+		fakeReport(2, 1),
 	];
 	const output = eslintFormatterPretty(reports);
 	const sanitized = stripAnsi(output);
@@ -154,11 +169,11 @@ test('files with similar errorCounts will sort according to warningCounts', t =>
 		sanitized.indexOf('2-error.1-warning.js'),
 		sanitized.indexOf('1-error.2-warning.js'),
 		sanitized.indexOf('1-error.1-warning.js'),
-		sanitized.indexOf('1-error.0-warning.js')
+		sanitized.indexOf('1-error.0-warning.js'),
 	];
 	console.log(output);
 	t.is(indexes.length, reports.length);
-	t.deepEqual(indexes, indexes.slice().sort((a, b) => a - b));
+	t.deepEqual(indexes, [...indexes].sort((a, b) => a - b));
 });
 
 test('use the `rulesMeta` property to get docs URL', t => {

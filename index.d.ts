@@ -1,7 +1,5 @@
 import type {ESLint, Linter} from 'eslint';
 
-export = formatterPretty;
-
 /**
 Pretty formatter for [ESLint](https://eslint.org).
 
@@ -9,27 +7,14 @@ Pretty formatter for [ESLint](https://eslint.org).
 @param data - Extended information related to the analysis results.
 @returns The formatted output.
 */
-declare function formatterPretty(
-	results: readonly formatterPretty.LintResult[],
-	data?: ESLint.LintResultData
+export default function eslintFormatterPretty(
+	results: LintResult[],
+	data?: LintResultData
 ): string;
 
-declare namespace formatterPretty {
-	interface LintResult {
-		readonly filePath: string;
-		readonly errorCount: number;
-		readonly warningCount: number;
-		readonly messages: readonly LintMessage[];
-	}
+export type LintResult = ESLint.LintResult;
+export type LintResultData = ESLint.LintResultData;
+export type Severity = Linter.Severity;
+export type LintMessage = Linter.LintMessage;
 
-	type Severity = Linter.Severity | 'warning' | 'error';
-
-	interface LintMessage {
-		readonly severity: Severity;
-		readonly fatal?: boolean;
-		readonly line?: number;
-		readonly column?: number;
-		readonly message: string;
-		readonly ruleId?: string | null;
-	}
-}
+export {Linter} from 'eslint';
