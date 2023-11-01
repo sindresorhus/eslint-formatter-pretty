@@ -15,8 +15,10 @@
 ## Install
 
 ```sh
-npm install --save-dev eslint-formatter-pretty
+npm install --save-dev eslint-formatter-pretty@5
 ```
+
+*To use this with ESLint, use version 5. Version 6 is [not compatible with ESLint](https://github.com/eslint/eslint/issues/15560).*
 
 ## Usage
 
@@ -49,10 +51,10 @@ grunt.registerTask('default', ['eslint']);
 ### [gulp-eslint](https://github.com/adametry/gulp-eslint)
 
 ```js
-const gulp = require('gulp');
-const eslint = require('gulp-eslint');
+import gulp from 'gulp';
+import eslint from 'gulp-eslint';
 
-gulp.task('lint', () =>
+export const lint = (
 	gulp.src('file.js')
 		.pipe(eslint())
 		.pipe(eslint.format('pretty'))
@@ -62,7 +64,9 @@ gulp.task('lint', () =>
 ### [eslint-loader](https://github.com/MoOx/eslint-loader) *(webpack)*
 
 ```js
-module.exports = {
+import eslintFormatterPretty from 'eslint-formatter-pretty';
+
+export default {
 	entry: ['file.js'],
 	module: {
 		rules: [
@@ -71,7 +75,7 @@ module.exports = {
 				exclude: /node_modules/,
 				loader: 'eslint-loader',
 				options: {
-					formatter: require('eslint-formatter-pretty')
+					formatter: eslintFormatterPretty
 				}
 			}
 		]
