@@ -103,7 +103,7 @@ export default function eslintFormatterPretty(results, data) {
 
 	let output = '\n';
 
-	if (process.stdout.isTTY && !process.env.CI) {
+	if (process.stdout.isTTY && !process.env.CI && process.env.TERM_PROGRAM === 'iTerm.app') {
 		// Make relative paths Command-clickable in iTerm
 		output += ansiEscapes.iTerm.setCwd();
 	}
