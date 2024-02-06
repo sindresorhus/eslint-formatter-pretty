@@ -28,9 +28,7 @@ Nothing to do. It's the default formatter.
 
 ### ESLint CLI
 
-```sh
-eslint --format=pretty file.js
-```
+* Version 6 is [not compatible with ESLint](https://github.com/eslint/eslint/issues/15560).*
 
 ### [grunt-eslint](https://github.com/sindresorhus/grunt-eslint)
 
