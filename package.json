@@ -42,7 +42,8 @@
 		"log-symbols": "^6.0.0",
 		"plur": "^5.1.0",
 		"string-width": "^7.0.0",
-		"supports-hyperlinks": "^3.0.0"
+		"supports-hyperlinks": "^3.0.0",
+		"terminal-size": "^4.0.0"
 	},
 	"devDependencies": {
 		"ava": "^5.3.1",

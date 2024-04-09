@@ -7,6 +7,7 @@ import stringWidth from 'string-width';
 import ansiEscapes from 'ansi-escapes';
 import {supportsHyperlink} from 'supports-hyperlinks';
 import getRuleDocs from 'eslint-rule-docs';
+import terminalSize from 'terminal-size';
 
 export default function eslintFormatterPretty(results, data) {
 	const lines = [];
@@ -16,6 +17,8 @@ export default function eslintFormatterPretty(results, data) {
 	let maxColumnWidth = 0;
 	let maxMessageWidth = 0;
 	let showLineNumbers = false;
+
+	const termSize = terminalSize();
 
 	for (const result of results
 		.sort((a, b) => {
@@ -86,7 +89,6 @@ export default function eslintFormatterPretty(results, data) {
 			maxColumnWidth = Math.max(columnWidth, maxColumnWidth);
 			maxMessageWidth = Math.max(messageWidth, maxMessageWidth);
 			showLineNumbers = showLineNumbers || x.line || x.column;
-
 			lines.push({
 				type: 'message',
 				severity: (x.fatal || x.severity === 2 || x.severity === 'error') ? 'error' : 'warning',
@@ -128,13 +130,47 @@ export default function eslintFormatterPretty(results, data) {
 				} catch {}
 			}
 
+			const preLine = '';
+			const severity = x.severity === 'warning' ? logSymbols.warning : logSymbols.error;
+			const range = ' '.repeat(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column);
+			const message = ' '.repeat(maxColumnWidth - x.columnWidth) + x.message;
+
+			const fullMessage = [preLine, severity, range, message].join('  ');
+
+			const fullMessageWidth = 3 + stringWidth(fullMessage);
+			const ruleIdWidth = stringWidth(x.ruleId);
+			const totalWidth = fullMessageWidth + ruleIdWidth;
+
+			// If fullMessageWidth is greater than the terminal width
+			// then we need to ONLY use the last line of the message to determine where to place the ruleId
+
+			let gapWidth = 0;
+
+			// So first we check
+			const totalWidthIsLessThanTerminalWidth = totalWidth < termSize.columns;
+
+			if (totalWidthIsLessThanTerminalWidth) {
+				gapWidth = termSize.columns - totalWidth;
+			} else {
+				// Calculate how many times the width will wrap the terminal
+				const wrapTimes = Math.floor(totalWidth / termSize.columns);
+				const totalLastLineWidth = totalWidth - (wrapTimes * termSize.columns);
+				gapWidth = termSize.columns - totalLastLineWidth;
+			}
+
+			const rule = ruleUrl && supportsHyperlink(process.stdout)
+				? ansiEscapes.link(chalk.dim(x.ruleId), ruleUrl)
+				: chalk.dim(x.ruleId);
+
+			const gap = ' '.repeat(gapWidth);
+
 			const line = [
-				'',
-				x.severity === 'warning' ? logSymbols.warning : logSymbols.error,
-				' '.repeat(maxLineWidth - x.lineWidth) + chalk.dim(x.line + chalk.gray(':') + x.column),
-				' '.repeat(maxColumnWidth - x.columnWidth) + x.message,
-				' '.repeat(maxMessageWidth - x.messageWidth)
-				+ (ruleUrl && supportsHyperlink(process.stdout) ? ansiEscapes.link(chalk.dim(x.ruleId), ruleUrl) : chalk.dim(x.ruleId)),
+				preLine,
+				severity,
+				range,
+				message,
+				gap,
+				rule,
 			];
 
 			if (!showLineNumbers) {
