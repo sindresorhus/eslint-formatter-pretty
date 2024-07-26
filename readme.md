@@ -15,10 +15,10 @@
 ## Install
 
 ```sh
-npm install --save-dev eslint-formatter-pretty@5
+npm install --save-dev eslint-formatter-pretty
 ```
 
-*To use this with ESLint, use version 5. Version 6 is [not compatible with ESLint](https://github.com/eslint/eslint/issues/15560).*
+*Please note that to use version 6 of this package you will HAVE to use ESLint v9+. If you're using ESLint v8 or below, install with `npm install --save-dev eslint-formatter-pretty@5` instead.*
 
 ## Usage
 
