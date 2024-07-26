@@ -18,7 +18,7 @@
 npm install --save-dev eslint-formatter-pretty
 ```
 
-*Please note that to use version 6 of this library you will HAVE to use ESLint v9+. If you're using ESLint v8 or below, install with `npm install --save-dev eslint-formatter-pretty@5` instead.*
+*Please note that to use version 6 of this package you will HAVE to use ESLint v9+. If you're using ESLint v8 or below, install with `npm install --save-dev eslint-formatter-pretty@5` instead.*
 
 ## Usage
 
