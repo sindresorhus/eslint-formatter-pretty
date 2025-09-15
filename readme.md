@@ -10,7 +10,7 @@
 - Sorts results by severity.
 - Stylizes inline codeblocks in messages.
 - Command-click a rule ID to open its docs.
-- Command-click a header to reveal the first error in your editor. *(iTerm-only)*
+- Click a filename header to open the file in your editor.
 
 ## Install
 
@@ -37,7 +37,7 @@ eslint --format=pretty file.js
 ```js
 grunt.initConfig({
 	eslint: {
-		target: ['file.js'].
+		target: ['file.js'],
 		options: {
 			format: 'pretty'
 		}
@@ -85,6 +85,6 @@ export default {
 
 ## Tips
 
-In iTerm, <kbd>Command</kbd>-click the filename header to open the file in your editor.
+In terminals with [hyperlink support](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda#supporting-apps), click the filename header to open the file in your editor, or click a rule ID to open its documentation.
 
-In [terminals with support for hyperlinks](https://gist.github.com/egmontkob/eb114294efbcd5adb1944c9f3cb5feda#supporting-apps), <kbd>Command</kbd>-click the rule ID to open its docs.
+In iTerm, <kbd>Command</kbd>-click the filename headers (like `index.js`) to open files at the specific line and column.

@@ -5,7 +5,7 @@ import test from 'ava';
 import stripAnsi from 'strip-ansi';
 import ansiEscapes from 'ansi-escapes';
 import chalk from 'chalk';
-import eslintFormatterPretty from '../index.js'; // eslint-disable-line import/order
+import eslintFormatterPretty from '../index.js'; // eslint-disable-line import-x/order
 
 /// import defaultFixture from './fixtures/default.json';
 // import noLineNumbers from './fixtures/no-line-numbers.json';
@@ -27,9 +27,7 @@ const fakeMessages = (desiredSeverity, desiredCount) => {
 	const ofDesiredSeverity = messages.filter(({severity}) => severity === desiredSeverity);
 
 	if (ofDesiredSeverity.length < desiredCount) {
-		throw new Error(
-			`requested ${desiredCount} messages with severity ${desiredSeverity}. Only found ${desiredSeverity.length}.`,
-		);
+		throw new Error(`requested ${desiredCount} messages with severity ${desiredSeverity}. Only found ${desiredSeverity.length}.`);
 	}
 
 	return ofDesiredSeverity.slice(0, desiredCount);
@@ -188,4 +186,74 @@ test('doesn\'t throw errors when rule docs aren\'t found', t => {
 	const output = eslintFormatterPretty(defaultFixture, data);
 	console.log(output);
 	t.true(output.includes('@typescript-eslint/no-unused-vars'));
+});
+
+// Helper to simulate different terminal environments
+const withTerminalEnv = (termProgram, callback) => {
+	const originalTermProgram = process.env.TERM_PROGRAM;
+	const originalIsTTY = process.stdout.isTTY;
+	const originalCI = process.env.CI;
+
+	process.env.TERM_PROGRAM = termProgram;
+	process.stdout.isTTY = true;
+	delete process.env.CI;
+
+	try {
+		return callback();
+	} finally {
+		if (originalTermProgram === undefined) {
+			delete process.env.TERM_PROGRAM;
+		} else {
+			process.env.TERM_PROGRAM = originalTermProgram;
+		}
+
+		process.stdout.isTTY = originalIsTTY;
+		if (originalCI !== undefined) {
+			process.env.CI = originalCI;
+		}
+	}
+};
+
+test('file:// hyperlinks work for any terminal when supported', t => {
+	enableHyperlinks();
+
+	// Test with different terminals
+	for (const terminal of ['kitty', 'gnome-terminal', 'wezterm', 'alacritty']) {
+		const output = withTerminalEnv(terminal, () => eslintFormatterPretty(defaultFixture));
+
+		// Should not contain iTerm setCwd sequence
+		t.false(output.includes(ansiEscapes.iTerm.setCwd()));
+
+		// Should contain file:// hyperlinks for filenames
+		const {filePath} = defaultFixture[0];
+		const expectedFileUrl = `file://${filePath}`;
+		t.true(output.includes(expectedFileUrl));
+	}
+});
+
+test('file:// hyperlinks use clean URLs without line numbers', t => {
+	enableHyperlinks();
+	const output = withTerminalEnv('kitty', () => eslintFormatterPretty(defaultFixture));
+
+	// Should contain clean file:// URL without line:column (which would make invalid URLs)
+	const {filePath} = defaultFixture[0];
+	const expectedFileUrl = `file://${filePath}`;
+
+	t.true(output.includes(expectedFileUrl));
+
+	// Should NOT contain line:column in the URL
+	t.false(output.includes(`${expectedFileUrl}:`));
+});
+
+test('file:// hyperlinks work without line numbers', t => {
+	enableHyperlinks();
+	const output = withTerminalEnv('kitty', () => eslintFormatterPretty(noLineNumbers));
+
+	// Should contain file:// URL without line numbers for messages that don't have them
+	const {filePath} = noLineNumbers[0];
+	const expectedFileUrl = `file://${filePath}`;
+	t.true(output.includes(expectedFileUrl));
+
+	// Should not contain line numbers in URL since messages don't have them
+	t.false(output.includes(`${expectedFileUrl}:`));
 });

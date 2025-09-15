@@ -1,4 +1,4 @@
-import type {ESLint, Linter} from 'eslint';
+import type {ESLint, Linter} from 'eslint'; // eslint-disable-line import-x/no-extraneous-dependencies, n/no-extraneous-import
 
 /**
 Pretty formatter for [ESLint](https://eslint.org).
@@ -17,4 +17,4 @@ export type LintResultData = ESLint.LintResultData;
 export type Severity = Linter.Severity;
 export type LintMessage = Linter.LintMessage;
 
-export {Linter} from 'eslint';
+export {Linter} from 'eslint'; // eslint-disable-line import-x/no-extraneous-dependencies, n/no-extraneous-import
