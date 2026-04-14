@@ -75,9 +75,11 @@ function formatOutputLine(line, options) {
 	const {maxLineWidth, maxColumnWidth, maxMessageWidth, showLineNumbers, data} = options;
 	if (line.type === 'header') {
 		// For terminals that support hyperlinks (but not iTerm/VSCode), use file:// hyperlinks
-		if (createSupportsHyperlinks(process.stdout)
+		if (
+			createSupportsHyperlinks(process.stdout)
 			&& process.env.TERM_PROGRAM !== 'iTerm.app'
-			&& process.env.TERM_PROGRAM !== 'vscode') {
+			&& process.env.TERM_PROGRAM !== 'vscode'
+		) {
 			const fileName = chalk.underline(line.relativeFilePath);
 			const encodedPath = encodeURI(line.filePath);
 			const fileUrl = `file://${encodedPath}`;
