@@ -74,9 +74,11 @@ function formatHeader(filePath, firstErrorOrWarning) {
 function formatOutputLine(line, options) {
 	const {maxLineWidth, maxColumnWidth, maxMessageWidth, showLineNumbers, data} = options;
 	if (line.type === 'header') {
-		// ITerm should always use its native Command-click behavior with line:column
-		// Never use file:// hyperlinks for iTerm since they can't include line:column
-		if (process.env.TERM_PROGRAM === 'iTerm.app') {
+		// ITerm and VSCode should always use its native Command-click behavior with line:column
+		// Never use file:// hyperlinks for them since they can't include line:column
+		if (process.env.TERM_PROGRAM === 'iTerm.app' 
+			|| process.env.TERM_PROGRAM === 'vscode') {
+
 			// Include hidden line:column for iTerm's Command-click
 			const fileName = chalk.underline(line.relativeFilePath);
 			const position = line.firstLineCol ? chalk.hidden.dim.gray(`:${line.firstLineCol}`) : '';
